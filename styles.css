@@ -1,0 +1,239 @@
+:root {
+    --primary: #6366f1;
+    --secondary: #4f46e5;
+    --accent: #10b981;
+    --dark: #1e293b;
+    --darker: #0f172a;
+    --light: #f8fafc;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--darker);
+    color: var(--light);
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--dark);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    font-size: 2.2rem;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--primary);
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--darker);
+    border: 2px solid var(--primary);
+    border-radius: 0.5rem;
+    color: var(--light);
+    font-size: 1rem;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--secondary);
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.stats-card {
+    background: var(--darker);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+
+.stats-card h3 {
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--darker);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: center;
+}
+
+th {
+    background: var(--primary);
+    color: white;
+    font-weight: 500;
+}
+
+tr:nth-child(even) {
+    background: rgba(255,255,255,0.05);
+}
+
+tr:hover {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+#result {
+    background: var(--darker);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+#result b {
+    color: var(--accent);
+    font-size: 1.2rem;
+    display: block;
+    margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .container {
+        padding: 1.5rem;
+    }
+    
+    .input-group.grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === CSS Baru untuk Manajemen Karyawan & Tampilan Slip Gaji === */
+
+/* Employee List */
+#employeeList {
+    margin-top: 1rem;
+}
+
+.employee-item {
+    background: var(--dark);
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--primary);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.employee-item:hover {
+    background: var(--secondary);
+}
+
+/* Employee Detail Section */
+#employeeDetail {
+    margin-top: 2rem;
+}
+
+#employeeDetail h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+/* Override warna input & label di employee detail jika diperlukan */
+#employeeDetail label {
+    color: var(--primary);
+}
+
+/* Perbaikan responsif untuk kolom tabel slip gaji */
+#slipGajiTemplate td {
+    white-space: normal;
+    word-wrap: break-word;
+}

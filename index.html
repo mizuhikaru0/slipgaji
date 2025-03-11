@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payroll Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Manajemen Karyawan</h2>
+    <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan">
+    <button class="btn btn-primary" onclick="addEmployee()">Tambah Karyawan</button>
+    <!-- Daftar karyawan akan muncul di sini -->
+    <div id="employeeList"></div>
+  </div>
+
+  <!-- Bagian Detail Karyawan -->
+  <div class="container" id="employeeDetail" style="display:none;">
+    <h2>Detail Karyawan: <span id="selectedEmployeeName"></span></h2>
+    <div class="input-group">
+      <label><i class="fas fa-coins"></i> Gaji Harian</label>
+      <input type="number" id="harian" placeholder="Rp">
+    </div>
+    <div class="input-group">
+      <label><i class="fas fa-calendar-days"></i> Hari Kerja</label>
+      <input type="number" id="totalHari" placeholder="Hari" oninput="generateDates(this.value)">
+    </div>
+    <div class="input-group grid">
+      <div class="stats-card">
+        <h3><i class="fas fa-hand-holding-dollar"></i> Total Kasbon</h3>
+        <div id="kasbonTotal">Rp 0</div>
+        <div class="input-group">
+          <input type="number" id="kasbon" placeholder="Jumlah kasbon">
+          <button class="btn btn-primary" onclick="tambahKasbon()">
+            <i class="fas fa-plus"></i> Tambah Kasbon
+          </button>
+        </div>
+      </div>
+      <div class="stats-card">
+        <h3><i class="fas fa-clock"></i> Total Lembur</h3>
+        <div id="lemburTotal">0 Jam</div>
+        <div class="input-group">
+          <input type="number" id="lembur" placeholder="Jam lembur">
+          <button class="btn btn-primary" onclick="tambahLembur()">
+            <i class="fas fa-plus"></i> Tambah Lembur
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="datesContainer"></div>
+    <button class="btn btn-primary" onclick="updateEmployeeData()" style="width: 100%">
+      <i class="fas fa-save"></i> Simpan Perubahan
+    </button>
+    <button class="btn btn-primary" onclick="generateSlipGaji()" style="width: 100%; margin-top: 1rem">
+      <i class="fas fa-file-download"></i> Cetak Slip Gaji
+    </button>
+  </div>
+
+  <!-- Template Slip Gaji -->
+  <div id="slipGajiTemplate" style="display: none; background: #ffffff; color: #333333; padding: 30px; margin: 30px auto; border-radius: 10px; font-family: 'Inter', sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 600px;">
+    <h2 style="text-align: center; margin-bottom: 1rem; color: #1e293b;">SLIP GAJI KARYAWAN</h2>
+    <div style="margin-bottom: 1.5rem; border-bottom: 2px solid #6366f1; padding-bottom: 1rem;">
+      <p style="margin: 0.2rem 0; font-size: 0.95rem;">Tanggal: <span id="slipTanggal"></span></p>
+    </div>
+    <table style="width: 100%; margin-bottom: 1.5rem; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #bdbdbd; background-color: #e3f2fd;">Nama Karyawan</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; text-align: right; background-color: #e8f5e9;" id="slipNamaKaryawan"></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #bdbdbd; background-color: #e3f2fd;">Gaji Harian</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; text-align: right; background-color: #e8f5e9;" id="slipGajiHarian"></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #bdbdbd; background-color: #e3f2fd;">Hari Kerja</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; text-align: right; background-color: #e8f5e9;" id="slipTotalHari"></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #bdbdbd; background-color: #e3f2fd;">Hari Hadir</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; text-align: right; background-color: #e8f5e9;" id="slipHadir"></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #bdbdbd; background-color: #e3f2fd;">Total Gaji Pokok</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; text-align: right; background-color: #e8f5e9;" id="slipTotalGaji"></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #bdbdbd; background-color: #e3f2fd;">Uang Lembur</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; text-align: right; background-color: #e8f5e9;" id="slipLembur"></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #bdbdbd; background-color: #e3f2fd;">Total Kasbon</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e0e0e0; text-align: right; background-color: #e8f5e9;" id="slipKasbon"></td>
+      </tr>
+      <tr style="font-weight: bold; background-color: #fff9c4;">
+        <td style="padding: 14px 0; border-right: 1px solid #bdbdbd;">GAJI BERSIH</td>
+        <td style="padding: 14px 0; text-align: right;" id="slipGajiBersih"></td>
+      </tr>
+    </table>
+    <div style="text-align: center; margin-top: 2rem; color: #888888; font-size: 0.85rem;">
+      <p>Slip gaji ini dihasilkan secara otomatis<br>oleh Payroll Management System</p>
+    </div>
+  </div>
+
+  <!-- Impor file modul utama dari folder js -->
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
